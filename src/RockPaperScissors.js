@@ -1,85 +1,101 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Button, Card, CardContent, CardHeader, CardMeta, Icon } from 'semantic-ui-react';
 
 const RockPaperScissors = () => {
   //Need states for declaring winner, showing wins,losses, and ties.
-  const [winner, setWinner] = useState(true)
-  const [showWins, setShowWins] = useState(0)
-  const [showLosses, setShowLosses] = useState(0)
-  const [showTies, setShowTies] = useState(0)
+  // const [winner, setWinner] = useState(null)
+  const [wins, setWins] = useState(0)
+  const [losses, setLosses] = useState(0)
+  const [ties, setTies] = useState(0)
   const [userChoice, setUserChoice] = useState("")
   const [compChoice, setCompChoice] = useState("")
 
+  useEffect(() => {
 
-  //Need an onClick to trigger the
-  //- logic to determine who won
+  }, [ties, wins, losses])
 
-  // Logic:
+  // Compare choice to userChoice.  If user wins, increment wins by 1.
+  // If user loses, increment losses by 1.  
+  // If they're the same you increment ties by 1. 
+  // Based on that, print "You won!" or "You lost!" 
+ 
+  const getCompChoice = () => {
+    let options = ["rock", "paper", "scissors"]
+    let choice = options[Math.floor(Math.random()*options.length)]; 
+    setCompChoice(choice)
+  }
 
-  
-  // if the hand matches the computer's answer, +1 is added to Ties
+  const handleClick = (a) => {
+    setUserChoice(a)
+    getCompChoice()
+    checkWinner(userChoice, compChoice)
+  };
 
-  // the computer randomly generates a rock, paper, or scissors answer
-  const options = [
-    "rock", "paper", "scissors"
-  ]
-  
-  const choice = options[Math.floor(Math.random()*options.length)];
-  console.log("computer's choice:", choice)
+  const checkWinner = (uc, cc) => {
+    if (uc === "rock" && cc === "rock") {
+      setTies((ties) => ties + 1)
+    } else if (uc === "rock" && cc === "scissors") {
+      setWins((wins) => wins + 1)
+    } else if (uc === "rock" && cc === "paper") {
+      setLosses((losses) => losses + 1)
+    } else if (uc === "scissors" && cc === "rock") {
+      setLosses((losses) => losses + 1)
+    } else if (uc === "scissors" && cc === "scissors") {
+      setTies((ties) => ties + 1)
+    } else if (uc === "scissors" && cc === "paper") {
+      setWins((wins) => wins + 1)
+    } else if (uc === "paper" && cc === "rock") {
+      setWins((wins) => wins + 1)
+    } else if (uc === "paper" && cc === "scissors") {
+      setLosses((losses) => losses + 1)
+    } else if (uc === "paper" && cc === "paper") {
+      setTies((ties) => ties + 1)
+    };
+  };
 
-  // Need counters for wins, losses and ties
-  // setShowWins += 1 
-  // setShowLosses += 1
-  // setShowTies += 1
-  // const reducerFunction =(state, action) => {
-  //   switch(action.type){
-  //     case "rock":
-  //       return setWinner(false)
-  //     default:
-  //       return state
-  //   }
-  // }
-//dispatch would be win, loss, or tie.  When triggered it increments.
-  // const [count, dispatch] = useReducer(reducerFunction, 0)
+ 
+
 
 
 // the user clicks one of the hands
   return (
     <div>
       <h1>You VS the Computer</h1>
-      <h4>Computer's choice: {choice} --- User's choice: {userChoice} </h4>
+      <p>Your Choice: {userChoice}</p>
       <p>
       <Icon  
       link name='hand rock'
       size ='huge' 
-      onClick={() => setUserChoice("rock")}
+      onClick={() => handleClick("rock")}
       />
       <Icon 
       link name='hand paper' 
       size='huge' 
-      onClick={() => setUserChoice("paper")}
+      onClick={() => handleClick("paper")}
       />
       <Icon 
       link name='hand scissors' 
       size='huge' 
-      onClick={() => setUserChoice("scissors")}
+      onClick={() => handleClick("scissors")}
       /> 
       </p>
-      <p>{winner ? "You win" : "You lose"}</p>
+      <p>Computer's Choice: {compChoice}</p>
+
       <Card>
         <CardContent>
         <CardHeader>Results</CardHeader>
         <CardMeta>
-          Wins {showWins}
+          Wins {wins}
           </CardMeta>
         <CardMeta>
-          Losses {showLosses}
+          Losses {losses}
           </CardMeta>
         <CardMeta>
-          Ties {showTies}
+          Ties {ties}
           </CardMeta>
         </CardContent>
       </Card>
+
     </div>
   )
 }
