@@ -2,16 +2,30 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { Button, Card, CardContent, CardHeader, CardMeta, Icon } from 'semantic-ui-react';
 
 const RockPaperScissors = () => {
-  const [winner, setWinner] = useState("")
-  const [wins, setWins] = useState(0)
-  const [losses, setLosses] = useState(0)
-  const [ties, setTies] = useState(0)
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case "win":
+        return { wins: state.wins + 1}
+      case "lose":
+        return { losses: state.losses + 1}
+      case "tie":
+        return { ties: state.ties + 1}
+      default:
+        return state
+    };
+  };
+
+  const [state, dispatch] = useReducer(reducer, { wins: 0, losses: 0, ties: 0 })
+  // const [winner, setWinner] = useState(null)
+  // const [losses, setLosses] = useState(0)
+  // const [ties, setTies] = useState(0)
   const [userChoice, setUserChoice] = useState("")
   const [compChoice, setCompChoice] = useState("")
 
   useEffect(() => {
 
-  }, [ties, wins, losses])
+  }, [])
  
   const getCompChoice = () => {
     let options = ["rock", "paper", "scissors"]
@@ -27,32 +41,23 @@ const RockPaperScissors = () => {
 
   const checkWinner = (uc, cc) => {
     if (uc === "rock" && cc === "rock") {
-      setTies((ties) => ties + 1)
-      setWinner("tie")
+      dispatch({type: "tie"})
     } else if (uc === "rock" && cc === "scissors") {
-      setWins((wins) => wins + 1)
-      setWinner("You")
+      dispatch({type: "win"})
     } else if (uc === "rock" && cc === "paper") {
-      setLosses((losses) => losses + 1)
-      setWinner("Computer")
+      dispatch({ type: 'lose'})
     } else if (uc === "scissors" && cc === "rock") {
-      setLosses((losses) => losses + 1)
-      setWinner("Computer")
+      dispatch({ type: 'lose'})
     } else if (uc === "scissors" && cc === "scissors") {
-      setTies((ties) => ties + 1)
-      setWinner("tie")
+      dispatch({ type: "tie"})
     } else if (uc === "scissors" && cc === "paper") {
-      setWins((wins) => wins + 1)
-      setWinner("You")
+      dispatch({type: "win"})
     } else if (uc === "paper" && cc === "rock") {
-      setWins((wins) => wins + 1)
-      setWinner("You")
+      dispatch({type: "win"})
     } else if (uc === "paper" && cc === "scissors") {
-      setLosses((losses) => losses + 1)
-      setWinner("Computer")
+      dispatch({ type: 'lose'})
     } else if (uc === "paper" && cc === "paper") {
-      setTies((ties) => ties + 1)
-      setWinner("tie")
+      dispatch({ type: "tie"})
     };
   };
 
@@ -83,15 +88,14 @@ const RockPaperScissors = () => {
       <Card>
         <CardContent>
         <CardHeader>Results</CardHeader>
-        <p>Winner: {winner}</p>
         <CardMeta>
-          Wins {wins}
+          Wins {state.wins}
           </CardMeta>
         <CardMeta>
-          Losses {losses}
+          Losses {state.losses}
           </CardMeta>
         <CardMeta>
-          Ties {ties}
+          Ties {state.ties}
           </CardMeta>
         </CardContent>
       </Card>
