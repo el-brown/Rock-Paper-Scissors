@@ -11,91 +11,125 @@ const RockPaperScissors = () => {
 
   useEffect(() => {
 
-  }, [ties, wins, losses])
+  }, [compChoice])
  
+
   const getCompChoice = () => {
     let options = ["rock", "paper", "scissors"]
     let choice = options[Math.floor(Math.random()*options.length)]; 
     setCompChoice(choice)
+    return choice
   }
 
-  const handleClick = (a) => {
-    setUserChoice(a)
-    getCompChoice()
-    checkWinner(userChoice, compChoice)
-  };
-
-  const checkWinner = (uc, cc) => {
+  const handleClick = (uc) => {
+    setUserChoice(uc)
+    let cc = getCompChoice()
     if (uc === "rock" && cc === "rock") {
-      setTies((ties) => ties + 1)
+      setTies(prevState => prevState + 1)
+      console.log("ties", ties)
       setWinner("tie")
     } else if (uc === "rock" && cc === "scissors") {
-      setWins((wins) => wins + 1)
+      setWins(prevState => prevState + 1)
       setWinner("You")
     } else if (uc === "rock" && cc === "paper") {
-      setLosses((losses) => losses + 1)
+      setLosses(prevState => prevState + 1)
       setWinner("Computer")
     } else if (uc === "scissors" && cc === "rock") {
-      setLosses((losses) => losses + 1)
+      setLosses(prevState => prevState + 1)
       setWinner("Computer")
     } else if (uc === "scissors" && cc === "scissors") {
-      setTies((ties) => ties + 1)
+      setTies(prevState => prevState + 1)
       setWinner("tie")
     } else if (uc === "scissors" && cc === "paper") {
-      setWins((wins) => wins + 1)
+      setWins(prevState => prevState + 1)
       setWinner("You")
     } else if (uc === "paper" && cc === "rock") {
-      setWins((wins) => wins + 1)
+      setWins(prevState => prevState + 1)
       setWinner("You")
     } else if (uc === "paper" && cc === "scissors") {
-      setLosses((losses) => losses + 1)
+      setLosses(prevState => prevState + 1)
       setWinner("Computer")
     } else if (uc === "paper" && cc === "paper") {
-      setTies((ties) => ties + 1)
+      setTies(prevState => prevState + 1)
       setWinner("tie")
     };
   };
 
+  // const checkWinner = (uc, cc) => {
+  //   if (uc === "rock" && cc === "rock") {
+  //     setTies(prevState => prevState + 1)
+  //     console.log("ties", ties)
+  //     setWinner("tie")
+  //   } else if (uc === "rock" && cc === "scissors") {
+  //     setWins(prevState => prevState + 1)
+  //     setWinner("You")
+  //   } else if (uc === "rock" && cc === "paper") {
+  //     setLosses(prevState => prevState + 1)
+  //     setWinner("Computer")
+  //   } else if (uc === "scissors" && cc === "rock") {
+  //     setLosses(prevState => prevState + 1)
+  //     setWinner("Computer")
+  //   } else if (uc === "scissors" && cc === "scissors") {
+  //     setTies(prevState => prevState + 1)
+  //     setWinner("tie")
+  //   } else if (uc === "scissors" && cc === "paper") {
+  //     setWins(prevState => prevState + 1)
+  //     setWinner("You")
+  //   } else if (uc === "paper" && cc === "rock") {
+  //     setWins(prevState => prevState + 1)
+  //     setWinner("You")
+  //   } else if (uc === "paper" && cc === "scissors") {
+  //     setLosses(prevState => prevState + 1)
+  //     setWinner("Computer")
+  //   } else if (uc === "paper" && cc === "paper") {
+  //     setTies(prevState => prevState + 1)
+  //     setWinner("tie")
+  //   };
+  // };
+
 
   return (
     <div>
-      <h1>You VS the Computer</h1>
-      <p>Your Choice: {userChoice}</p>
-      <p>
-      <Icon  
-      link name='hand rock'
-      size ='huge' 
-      onClick={() => handleClick("rock")}
-      />
-      <Icon 
-      link name='hand paper' 
-      size='huge' 
-      onClick={() => handleClick("paper")}
-      />
-      <Icon 
-      link name='hand scissors' 
-      size='huge' 
-      onClick={() => handleClick("scissors")}
-      /> 
-      </p>
-      <p>Computer's Choice: {compChoice}</p>
-
       <Card>
         <CardContent>
-        <CardHeader>Results</CardHeader>
-        <p>Winner: {winner}</p>
-        <CardMeta>
-          Wins {wins}
-          </CardMeta>
-        <CardMeta>
-          Losses {losses}
-          </CardMeta>
-        <CardMeta>
-          Ties {ties}
-          </CardMeta>
+          <h1>You VS Computer</h1>
+          <p>Your Choice: {userChoice}</p>
+          <p>
+          <Icon  
+          link name='hand rock'
+          size ='huge' 
+          onClick={() => handleClick("rock")}
+          />
+          <Icon 
+          link name='hand paper' 
+          size='huge' 
+          onClick={() => handleClick("paper")}
+          />
+          <Icon 
+          link name='hand scissors' 
+          size='huge' 
+          onClick={() => handleClick("scissors")}
+          /> 
+          </p>
+          <p>Computer's Choice: {compChoice}</p>
+
+          <Card>
+            <CardContent>
+            <CardHeader>Results</CardHeader>
+            <p>Winner: {winner}</p>
+            <CardMeta>
+              Wins {wins}
+              </CardMeta>
+            <CardMeta>
+              Losses {losses}
+              </CardMeta>
+            <CardMeta>
+              Ties {ties}
+              </CardMeta>
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
-
     </div>
   )
 }

@@ -5,8 +5,10 @@ const RockPaperScissors = () => {
 
   function reducer(state, action) {
     switch (action.type) {
-      case "win":
-        return { wins: state.wins + 1}
+      case "win"
+        //Would this work?
+        newWins = state.wins + 1
+        return newWins
       case "lose":
         return { losses: state.losses + 1}
       case "tie":
